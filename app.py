@@ -1,4 +1,7 @@
+import json
+
 import streamlit as st
+import streamlit.components.v1 as components
 
 st.set_page_config(page_title="지구별 OX 퀴즈 정답 찾기", page_icon="🌍")
 
@@ -22,17 +25,39 @@ quiz = [
 ]
 
 st.title("🌍 지구별 OX 퀴즈 정답 찾기")
-query = st.text_input("문제 검색 (두 글자 이상)", placeholder="예: 뱀은").strip()
 
-if len(query) >= 2:
-    results = [(q, a) for q, a in quiz if query.replace(" ", "") in q.replace(" ", "")]
-    if results:
-        for q, a in results:
-            if a == "O":
-                st.success(f"**{q}** → ⭕ O")
-            else:
-                st.error(f"**{q}** → ❌ X")
-    else:
-        st.warning("일치하는 문제가 없어요.")
-elif query:
-    st.info("두 글자 이상 입력해 주세요.")
+# 입력할 때마다 바로 결과가 나오도록 검색은 브라우저(JavaScript)에서 처리
+html = """
+<style>
+  body { font-family: sans-serif; margin: 0; }
+  input { width: 100%; box-sizing: border-box; padding: 10px; font-size: 16px;
+          border: 1px solid #ccc; border-radius: 8px; }
+  .item { margin-top: 10px; padding: 12px; border-radius: 8px; font-size: 15px; }
+  .O { background: #dff5e3; color: #1b6e2d; }
+  .X { background: #fde2e2; color: #a12020; }
+  .msg { margin-top: 10px; padding: 12px; border-radius: 8px; background: #fff4d6; color: #7a5b00; }
+</style>
+<input id="q" placeholder="문제 검색 (두 글자 이상) 예: 뱀은" autofocus>
+<div id="out"></div>
+<script>
+  const quiz = QUIZ_DATA;
+  const norm = s => s.replace(/ /g, "");
+  const q = document.getElementById("q"), out = document.getElementById("out");
+  q.addEventListener("input", () => {
+    const k = norm(q.value);
+    out.innerHTML = "";
+    if (!k) return;
+    if (k.length < 2) { out.innerHTML = '<div class="msg">두 글자 이상 입력해 주세요.</div>'; return; }
+    const hits = quiz.filter(([text]) => norm(text).includes(k));
+    if (!hits.length) { out.innerHTML = '<div class="msg">일치하는 문제가 없어요.</div>'; return; }
+    for (const [text, ans] of hits) {
+      const d = document.createElement("div");
+      d.className = "item " + ans;
+      d.textContent = text + "  →  " + (ans === "O" ? "⭕ O" : "❌ X");
+      out.appendChild(d);
+    }
+  });
+</script>
+""".replace("QUIZ_DATA", json.dumps(quiz, ensure_ascii=False))
+
+components.html(html, height=600, scrolling=True)
