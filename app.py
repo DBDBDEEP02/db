@@ -13,7 +13,7 @@ with open(Path(__file__).parent / "data" / "quiz.csv", encoding="utf-8") as f:
     quiz = [(row["question"], row["answer"]) for row in csv.DictReader(f)]
 
 st.title("🌍 지구별 OX 퀴즈 정답 찾기")
-st.caption(f"문제 {len(quiz)}개 · 초성 검색 가능 (예: ㅂㅇ ㄷㄹ) · 출처: [블로그](https://blog.naver.com/dpdk1218/221795137191)")
+st.caption(f"문제 {len(quiz)}개")
 
 # 입력할 때마다 바로 결과가 나오도록 검색은 브라우저(JavaScript)에서 처리
 html = """
