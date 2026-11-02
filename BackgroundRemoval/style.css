@@ -1,0 +1,76 @@
+/*Message spacing*/
+div[data-testid="stChatMessage"],
+section[data-testid="stChatMessage"] {
+    margin-bottom: 16px;
+}
+
+/*Common message box*/
+div[data-testid="stChatMessage"] > div,
+section[data-testid="stChatMessage"] > div {
+    padding: 16px 20px;
+    border-radius: 18px;
+    border: 2px solid #DDD;
+    background-color: #FAFAFA;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+div[data-testid="stChatMessage"] > div:hover,
+section[data-testid="stChatMessage"] > div:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+}
+
+/*User message (if data-role exists)*/
+div[data-testid="stChatMessage"][data-role="user"] > div,
+section[data-testid="stChatMessage"][data-role="user"] > div {
+    background-color: #E3F0FF;
+    border-color: #5B9DFF;
+}
+
+div[data-testid="stChatMessage"][data-role="user"] p,
+section[data-testid="stChatMessage"][data-role="user"] p {
+    color: #003A8F;
+    font-weight: 700;
+}
+
+/*Assistant message (if data-role exists)*/
+div[data-testid="stChatMessage"][data-role="assistant"] > div,
+section[data-testid="stChatMessage"][data-role="assistant"] > div {
+    background-color: #FFF8E1;
+    border-color: #FFB300;
+}
+
+div[data-testid="stChatMessage"][data-role="assistant"] p,
+section[data-testid="stChatMessage"][data-role="assistant"] p {
+    color: #4E342E;
+    font-weight: 600;
+}
+
+/*Common text readability*/
+div[data-testid="stChatMessage"] p,
+div[data-testid="stChatMessage"] li,
+section[data-testid="stChatMessage"] p,
+section[data-testid="stChatMessage"] li {
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+/*Code emphasis*/
+div[data-testid="stChatMessage"] code,
+section[data-testid="stChatMessage"] code {
+    background-color: #000000;
+    color: #00FF9C;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/*Input box*/
+div[data-testid="stChatInput"] textarea,
+textarea {
+    border-radius: 14px !important;
+    padding: 14px !important;
+    font-size: 1rem !important;
+    border: 2px solid #999 !important;
+}
