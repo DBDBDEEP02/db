@@ -1,0 +1,4 @@
+# 심화 앱의 ONNX 모델(약 290MB)은 GitHub 용량 제한 때문에 올리지 않음 (앱 첫 실행 시 자동 다운로드)
+recycle/models2/
+*.download
+__pycache__/

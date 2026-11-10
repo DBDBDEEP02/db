@@ -1,0 +1,7 @@
+# [심화2] AI 분리수거 도우미(app2.py) 실행에 필요한 라이브러리
+streamlit==1.65.0
+onnxruntime==1.23.2
+tokenizers==0.23.3
+numpy==2.2.6
+pillow==12.3.0
+pandas==2.3.3

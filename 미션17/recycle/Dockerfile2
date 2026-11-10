@@ -1,0 +1,27 @@
+# [심화2] AI 분리수거 도우미 Docker 이미지
+# 빌드: docker build -f Dockerfile2 -t <도커허브아이디>/recycle-helper:latest .
+# 실행: docker run -p 8501:8501 <도커허브아이디>/recycle-helper:latest
+
+FROM python:3.10-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+WORKDIR /app
+
+# 라이브러리 먼저 설치 (코드만 바뀌면 이 단계는 캐시 재사용)
+COPY requirements2.txt .
+RUN pip install --no-cache-dir -r requirements2.txt
+
+COPY recycle.py recycle_chat.py app2.py ./
+
+# 빌드할 때 ONNX 모델을 미리 내려받아 이미지에 포함 (약 290MB)
+#   - CLIP 이미지/텍스트 모델: 사진 분류
+#   - 다국어 MiniLM 문장 임베딩 모델: 한국어 글 질문 이해
+RUN python -c "from recycle import download_models; download_models()"
+
+EXPOSE 8501
+
+HEALTHCHECK CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health')" || exit 1
+
+CMD ["streamlit", "run", "app2.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.headless=true"]
